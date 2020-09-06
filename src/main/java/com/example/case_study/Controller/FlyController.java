@@ -49,9 +49,8 @@ public class FlyController {
     	JsonNode airplane_name = rootNode.path("airplane_name");
     	JsonNode from_airport = rootNode.path("from_airport");
     	JsonNode to_airport = rootNode.path("to_airport");
-    	JsonNode fly_date = rootNode.path("fly_date");
     	JsonNode fly_money = rootNode.path("fly_money");
-    	SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+    	JsonNode fly_quato = rootNode.path("fly_quato");
 		Fly fly=new Fly();
 		Route rt=routeService.getRouteByName(from_airport.asText(),to_airport.asText());
 		if(rt==null)
@@ -64,8 +63,9 @@ public class FlyController {
 		}
 		fly.setRoute_id(rt);
 		fly.setAirplane_id(airplaneService.getAirportByName(airplane_name.asText()));
-		fly.setFly_date(formatter.parse(fly_date.asText()));
 		fly.setMoney(fly_money.asDouble());
+		fly.setQuota(fly_quato.asInt());
+		fly.setFly_date();
 		flyService.saveOrUpdate(fly);
 		return new ResponseEntity<>(fly, HttpStatus.OK);
 	}

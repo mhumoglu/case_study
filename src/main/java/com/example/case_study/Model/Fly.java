@@ -8,7 +8,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Fly {
@@ -16,9 +23,32 @@ public class Fly {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
     private int id;
 
-	private Date fly_date;
+	private String fly_date;
     private double money;
+    private int quota;
+    private int remaining_quota;
     
+    public Fly() {}
+	
+	public int getRemaining_quota() {
+		return remaining_quota;
+	}
+	public void setRemaining_quota(int remaining_quota) {
+		this.remaining_quota = remaining_quota;
+	}
+	public Set<Fly> getFly_id() {
+		return fly_id;
+	}
+	public void setFly_id(Set<Fly> fly_id) {
+		this.fly_id = fly_id;
+	}
+	public int getQuota() {
+		return quota;
+	}
+	public void setQuota(int quota) {
+		this.quota = quota;
+		this.remaining_quota=quota;
+	}
 	@ManyToOne
 	@JoinColumn(name="airplane_id", nullable=false)
 	private Airplane airplane_id;
@@ -26,6 +56,10 @@ public class Fly {
 	@ManyToOne
     @JoinColumn(name="route_id", nullable=false)
     private Route route_id;
+	
+    @OneToMany(mappedBy = "fly_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Fly> fly_id= new HashSet<>();
 	
 	public Route getRoute_id() {
 		return route_id;
@@ -41,11 +75,15 @@ public class Fly {
 	}
 
 
-	public Date getFly_date() {
+	public String getFly_date() {
 		return fly_date;
 	}
-	public void setFly_date(Date fly_date) {
-		this.fly_date = fly_date;
+ 	public void setFly_date() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		
+
+
+		this.fly_date = localDateTime.toString();
 	}
 	public double getMoney() {
 		return money;
