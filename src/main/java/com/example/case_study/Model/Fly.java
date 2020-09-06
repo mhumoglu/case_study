@@ -80,9 +80,6 @@ public class Fly {
 	}
  	public void setFly_date() {
 		LocalDateTime localDateTime = LocalDateTime.now();
-		
-
-
 		this.fly_date = localDateTime.toString();
 	}
 	public double getMoney() {
